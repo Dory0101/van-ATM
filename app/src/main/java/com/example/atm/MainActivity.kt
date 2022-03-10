@@ -1,6 +1,7 @@
 package com.example.atm
 
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -10,9 +11,17 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
 import com.example.atm.databinding.ActivityMainBinding
+import okhttp3.*
+import okio.ByteString
+import okio.Okio
+import java.net.ConnectException
+import java.net.URL
+import java.util.concurrent.TimeUnit
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
 
+    private val TAG = MainActivity::class.java.simpleName
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
@@ -31,6 +40,17 @@ class MainActivity : AppCompatActivity() {
         binding.fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
+        }
+        //networking
+//        webTseting()
+    }
+
+    private fun webTseting() {
+        thread {
+            val data = URL("https://www.ibm.com")
+                .readText()
+            Log.d(TAG, "data: $data")
+
         }
     }
 
