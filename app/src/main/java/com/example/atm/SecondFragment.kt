@@ -2,22 +2,35 @@ package com.example.atm
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.atm.databinding.FragmentSecondBinding
+import com.example.atm.databinding.RowChatroomBinding
 import com.google.gson.Gson
 import okhttp3.*
 import okio.ByteString
+import org.w3c.dom.Text
 import java.util.concurrent.TimeUnit
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class SecondFragment : Fragment() {
+    //design draft
 
+    val chatRooms = listOf<ChatRoom>(
+        ChatRoom("101101", "Miau", "Welcome!"),
+        ChatRoom("101102", "Miau2", "Welcome!2"),
+        ChatRoom("101103", "Miau3", "Welcome!3"),
+        ChatRoom("101104", "Miau4", "Welcome!4")
+    )
     private var _binding: FragmentSecondBinding? = null
 
     // This property is only valid between onCreateView and
@@ -85,8 +98,41 @@ class SecondFragment : Fragment() {
 //            val json = "{ \"action\": \"N\", \"content\": \"$message\" }"
 //            websocket.send(json)
             websocket.send(Gson().toJson(Message("N", message)))
+        }
+
+        //Recycler's Adapter
+        binding.recycler.hasFixedSize() //recycler size fixed
+        binding.recycler.layoutManager = LinearLayoutManager(requireContext())
+        binding.recycler.adapter = ChatRoomAdapter()
+
+    }
+
+    inner class ChatRoomAdapter : RecyclerView.Adapter<BindingViewHolder>() {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder {
+//            val view = layoutInflater.inflate(
+//                R.layout.row_chatroom, parent, false) //attachToRoot show immediately or not
+//            return ChatRoomViewHolder(view)
+
+            val binding = RowChatroomBinding.inflate(layoutInflater, parent, false)
+            return BindingViewHolder(binding)
 
         }
+
+        override fun onBindViewHolder(holder: BindingViewHolder, position: Int) {
+            val room = chatRooms[position]
+            holder.host.setText(room.hostName)
+            holder.title.setText(room.title)
+        }
+
+        override fun getItemCount(): Int {
+            return chatRooms.size
+        }
+    }
+
+    inner class BindingViewHolder(val binding: RowChatroomBinding):
+        RecyclerView.ViewHolder(binding.root) {
+        val host = binding.chatoomHostName
+        val title = binding.chatroomTitle
     }
 
     override fun onDestroyView() {

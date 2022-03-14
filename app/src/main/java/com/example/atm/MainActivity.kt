@@ -46,11 +46,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun webTseting() {
-        thread {
+        thread { // use another thread  not to disturb main thread
             val data = URL("https://www.ibm.com")
                 .readText()
             Log.d(TAG, "data: $data")
-
         }
     }
 

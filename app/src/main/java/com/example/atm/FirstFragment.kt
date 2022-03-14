@@ -36,6 +36,7 @@ class FirstFragment : Fragment() {
         val pref = requireContext().getSharedPreferences("atm", Context.MODE_PRIVATE)
         val checked = pref.getBoolean("rem_username", false)
         binding.cbRemember.isChecked = checked
+
         binding.cbRemember.setOnCheckedChangeListener { compoundButton, checked ->
             remember = checked
             pref.edit().putBoolean("rem_username", remember).apply()
@@ -47,6 +48,7 @@ class FirstFragment : Fragment() {
         if (prefUser != "") {
             binding.edUsername.setText(prefUser)
         }
+
 
         binding.buttonFirst.setOnClickListener {
             //login code
